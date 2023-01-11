@@ -1,14 +1,28 @@
 import "./Create.css";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 export default function Create() {
   const [title, setTitle] = useState("");
   const [method, setMethod] = useState("");
   const [cookingTime, setCookingTime] = useState("");
+  const [newIngredient, setNewIngredient] = useState("");
+  const [ingredients, setIngredients] = useState([]);
+  const ingredientInput = useRef(null);
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(title, method, cookingTime);
+    console.log(title, method, cookingTime, ingredients);
+  }
+
+  function handleAdd(e) {
+    e.preventDefault();
+    const ing = newIngredient.trim();
+
+    if (ing && !ingredients.includes(ing)) {
+      setIngredients((prev) => [...prev, ing]);
+    }
+    setNewIngredient("");
+    ingredientInput.current.focus();
   }
 
   return (
@@ -24,6 +38,28 @@ export default function Create() {
             required
           />
         </label>
+
+        <label>
+          <span>Recipe ingredients:</span>
+          <div className="ingredients">
+            <input
+              type="text"
+              onChange={(e) => setNewIngredient(e.target.value)}
+              value={newIngredient}
+              ref={ingredientInput}
+            />
+            <button className="btn" onClick={(e) => handleAdd(e)}>
+              add
+            </button>
+          </div>
+        </label>
+        <p>
+          Current ingredients:{" "}
+          {ingredients.map((i) => (
+            <em key={i}>{i}, </em>
+          ))}
+        </p>
+
         <label>
           <span>Recipe method:</span>
           <textarea
@@ -32,6 +68,7 @@ export default function Create() {
             required
           />
         </label>
+
         <label>
           <span>Cooking time (minutes):</span>
           <input
@@ -41,6 +78,7 @@ export default function Create() {
             required
           />
         </label>
+
         <button type="submit" className="btn">
           Submit
         </button>
