@@ -9,7 +9,7 @@ import NavBar from "./components/NavBar/NavBar";
 function App() {
   return (
     <div className="App">
-      <HashRouter>
+      <HashRouter basename="https://innaforkert.github.io/recipes">
         <Routes>
           <Route element={<NavBar />} path="/">
             <Route element={<Home />} path="/" />
